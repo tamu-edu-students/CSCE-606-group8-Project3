@@ -27,3 +27,12 @@ Then("I should see my new ticket in the ticket list") do
   # Later we can refine this to check ticket_number or other unique identifier
   expect(page).to have_content("Login issue")
 end
+
+When("I go to the tickets list page") do
+  visit tickets_path
+end
+
+Then("I should see {string} in the ticket list") do |ticket_title|
+  visit tickets_path unless current_path == tickets_path
+  expect(page).to have_content(ticket_title)
+end
