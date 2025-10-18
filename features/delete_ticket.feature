@@ -8,8 +8,9 @@ Feature: Delete Ticket
       | title        | description        |
       | Test Ticket  | Delete this later  |
 
-  Scenario: Successfully deleting a ticket
-    Given I am on the tickets list page
-    When I follow "Destroy" for "Test Ticket"
-    Then I should see "Ticket was successfully destroyed"
-    And I should not see "Test Ticket"
+    Scenario: Successfully deleting a ticket
+        Given I am on the ticket page for "Test Ticket"
+        When I press "Destroy"
+        Then I should see "Ticket was successfully destroyed"
+        And I should not see "Test Ticket"
+
