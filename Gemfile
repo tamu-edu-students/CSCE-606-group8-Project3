@@ -71,3 +71,8 @@ group :test do
   gem 'launchy' 
   gem 'simplecov', require: false
 end
+gem "omniauth"
+gem "omniauth-rails_csrf_protection"
+gem "omniauth-google-oauth2"
+
+gem "dotenv-rails"
