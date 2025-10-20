@@ -13,7 +13,7 @@ class AddOmniauthAndRoleToUsers < ActiveRecord::Migration[8.0]
       t.integer :role, null: false, default: 0
     end
 
-    add_index :users, [:provider, :uid], unique: true
+    add_index :users, [ :provider, :uid ], unique: true
     add_index :users, :email, unique: true
     add_index :users, :role
   end

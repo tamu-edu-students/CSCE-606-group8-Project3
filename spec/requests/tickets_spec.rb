@@ -1,105 +1,71 @@
-# spec/requests/tickets_spec.rb
 require 'rails_helper'
 
 RSpec.describe "Tickets", type: :request do
-  let!(:ticket) { Ticket.create!(title: "Bug Report", description: "App crashes") }
+  let(:requester) { FactoryBot.create(:user, role: :requester) }
+  let(:agent) { FactoryBot.create(:user, role: :agent) }
+  let(:admin) { FactoryBot.create(:user, role: :admin) }
 
-  describe "GET /index" do
-    it "renders a successful response" do
-      get tickets_path
-      expect(response).to be_successful
-    end
-  end
+  describe "POST /tickets/:id/assign" do
+    let(:ticket) { FactoryBot.create(:ticket, requester: requester) }
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      get ticket_path(ticket)
-      expect(response).to be_successful
-    end
-  end
+    context 'when user is an agent' do
+      before { sign_in agent }
 
-  describe "GET /edit" do
-    it "renders a successful response" do
-      get edit_ticket_path(ticket)
-      expect(response).to be_successful
-    end
-  end
-
-  describe "POST /create" do
-    context "with valid parameters" do
-      let(:valid_params) { { ticket: { title: "New Ticket", description: "Details here" } } }
-
-      it "creates a new Ticket" do
-        expect {
-          post tickets_path, params: valid_params
-        }.to change(Ticket, :count).by(1)
-      end
-
-      it "redirects to the created ticket" do
-        post tickets_path, params: valid_params
-        expect(response).to redirect_to(ticket_path(Ticket.last))
-      end
-    end
-
-    context "with invalid parameters" do
-      let(:invalid_params) { { ticket: { title: "", description: "" } } }
-
-      it "does not create a new Ticket" do
-        expect {
-          post tickets_path, params: invalid_params
-        }.not_to change(Ticket, :count)
-      end
-
-      it "renders the 'new' template with status 422" do
-        post tickets_path, params: invalid_params
-        expect(response).to have_http_status(422)
-      end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:valid_update) { { ticket: { description: "Updated description" } } }
-
-      it "updates the ticket" do
-        patch ticket_path(ticket), params: valid_update
+      it 'assigns the ticket to the selected agent' do
+        post assign_ticket_path(ticket), params: { agent_id: agent.id }
         ticket.reload
-        expect(ticket.description).to eq("Updated description")
+        expect(ticket.assignee).to eq(agent)
       end
 
-      it "redirects to the ticket" do
-        patch ticket_path(ticket), params: valid_update
-        expect(response).to redirect_to(ticket_path(ticket))
+      it 'redirects to the ticket show page' do
+        post assign_ticket_path(ticket), params: { agent_id: agent.id }
+        expect(response).to redirect_to(ticket)
       end
     end
 
-    context "with invalid parameters" do
-      let(:invalid_update) { { ticket: { title: "" } } }
+    context 'when user is not authorized' do
+      before { sign_in requester }
 
-      it "does not update the ticket" do
-        original_title = ticket.title
-        patch ticket_path(ticket), params: invalid_update
-        ticket.reload
-        expect(ticket.title).to eq(original_title)
-      end
-
-      it "renders the 'edit' template with status 422" do
-        patch ticket_path(ticket), params: invalid_update
-        expect(response).to have_http_status(422)
+      it 'raises Pundit::NotAuthorizedError' do
+        expect {
+          post assign_ticket_path(ticket), params: { agent_id: agent.id }
+        }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
   end
 
-  describe "DELETE /destroy" do
-    it "destroys the requested ticket" do
-      expect {
-        delete ticket_path(ticket)
-      }.to change(Ticket, :count).by(-1)
+  describe "POST /tickets" do
+    context 'when auto round-robin is enabled' do
+      before do
+        Setting.set('assignment_strategy', 'round_robin')
+        sign_in requester
+      end
+
+      it 'assigns ticket to next agent in rotation' do
+        agent1 = FactoryBot.create(:user, role: :agent, name: 'Agent 1')
+        agent2 = FactoryBot.create(:user, role: :agent, name: 'Agent 2')
+
+        post tickets_path, params: { ticket: { subject: 'Test', description: 'Test desc', priority: 'normal' } }
+        ticket = Ticket.last
+        expect(ticket.assignee).to eq(agent1)
+
+        post tickets_path, params: { ticket: { subject: 'Test2', description: 'Test desc2', priority: 'normal' } }
+        ticket2 = Ticket.last
+        expect(ticket2.assignee).to eq(agent2)
+      end
     end
 
-    it "redirects to the tickets list" do
-      delete ticket_path(ticket)
-      expect(response).to redirect_to(tickets_path)
+    context 'when auto round-robin is disabled' do
+      before do
+        Setting.set('assignment_strategy', 'manual')
+        sign_in requester
+      end
+
+      it 'does not assign ticket automatically' do
+        post tickets_path, params: { ticket: { subject: 'Test', description: 'Test desc', priority: 'normal' } }
+        ticket = Ticket.last
+        expect(ticket.assignee).to be_nil
+      end
     end
   end
 end

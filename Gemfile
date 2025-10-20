@@ -50,10 +50,10 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails'          
-  gem 'factory_bot_rails'     
-  gem 'shoulda-matchers'      
-  gem 'spring-commands-rspec' 
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "shoulda-matchers"
+  gem "spring-commands-rspec"
 end
 
 group :development do
@@ -63,13 +63,13 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem 'cucumber-rails', require: false   # Cucumber integration for Rails
-  gem 'capybara'                         # acceptance/integration testing for browser flows
-  gem 'selenium-webdriver'               # drive a browser for feature tests
-  gem 'webdrivers'                       # automatically manages chromedriver/geckodriver
-  gem 'database_cleaner-active_record'   # keeps test DB clean between scenarios (optional)
-  gem 'launchy' 
-  gem 'simplecov', require: false
+  gem "cucumber-rails", require: false   # Cucumber integration for Rails
+  gem "capybara"                         # acceptance/integration testing for browser flows
+  gem "selenium-webdriver"               # drive a browser for feature tests
+  gem "webdrivers"                       # automatically manages chromedriver/geckodriver
+  gem "database_cleaner-active_record"   # keeps test DB clean between scenarios (optional)
+  gem "launchy"
+  gem "simplecov", require: false
   gem "factory_bot_rails"
 end
 

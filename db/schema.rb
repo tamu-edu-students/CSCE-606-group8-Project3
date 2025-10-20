@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_052416) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_20_152600) do
+  create_table "settings", force: :cascade do |t|
+    t.string "key"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.string "subject"
+    t.text "description"
+    t.integer "status"
+    t.integer "priority"
+    t.integer "requester_id", null: false
+    t.integer "assignee_id"
+    t.string "category"
+    t.datetime "closed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignee_id"], name: "index_tickets_on_assignee_id"
+    t.index ["requester_id"], name: "index_tickets_on_requester_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -27,4 +49,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_052416) do
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
     t.index ["role"], name: "index_users_on_role"
   end
+
+  add_foreign_key "tickets", "users", column: "assignee_id"
+  add_foreign_key "tickets", "users", column: "requester_id"
 end

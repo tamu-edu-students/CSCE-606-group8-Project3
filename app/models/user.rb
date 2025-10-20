@@ -21,23 +21,23 @@ class User < ApplicationRecord
   # auth['info']     => { 'email' => 'a@b.com', 'name' => 'Alice', 'image' => '...' }
   # auth['credentials'] => { 'token' => 'x', 'refresh_token' => 'y', 'expires_at' => 1732068000 }
   def self.from_omniauth(auth)
-    raise ArgumentError, "auth must include provider and uid" unless auth && auth['provider'] && auth['uid']
+    raise ArgumentError, "auth must include provider and uid" unless auth && auth["provider"] && auth["uid"]
 
-    user = find_or_initialize_by(provider: auth['provider'], uid: auth['uid'])
+    user = find_or_initialize_by(provider: auth["provider"], uid: auth["uid"])
 
-    info  = auth['info'] || {}
-    creds = auth['credentials'] || {}
+    info  = auth["info"] || {}
+    creds = auth["credentials"] || {}
 
-    user.email     = info['email'] if info['email'].present?
-    user.name      = info['name']  if info['name'].present?
-    user.image_url = info['image'] if info['image'].present?
+    user.email     = info["email"] if info["email"].present?
+    user.name      = info["name"]  if info["name"].present?
+    user.image_url = info["image"] if info["image"].present?
 
-    user.access_token  = creds['token']         if creds['token'].present?
-    user.refresh_token = creds['refresh_token'] if creds['refresh_token'].present?
+    user.access_token  = creds["token"]         if creds["token"].present?
+    user.refresh_token = creds["refresh_token"] if creds["refresh_token"].present?
 
-    if creds['expires_at'].present?
+    if creds["expires_at"].present?
       user.access_token_expires_at =
-        creds['expires_at'].is_a?(Numeric) ? Time.at(creds['expires_at']).to_datetime : creds['expires_at']
+        creds["expires_at"].is_a?(Numeric) ? Time.at(creds["expires_at"]).to_datetime : creds["expires_at"]
     end
 
     user.save!
@@ -46,7 +46,7 @@ class User < ApplicationRecord
 
   # Handy display helper
   def display_name
-    name.presence || email.to_s.split('@').first
+    name.presence || email.to_s.split("@").first
   end
 
   private

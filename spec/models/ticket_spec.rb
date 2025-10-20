@@ -1,18 +1,42 @@
 require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
-  it "is valid with a title and description" do
-    ticket = Ticket.new(title: "Sample", description: "Sample description")
-    expect(ticket).to be_valid
+  let(:requester) { FactoryBot.create(:user, role: :requester) }
+  let(:agent) { FactoryBot.create(:user, role: :agent) }
+  let(:ticket) { FactoryBot.create(:ticket, requester: requester, assignee: agent) }
+
+  describe 'associations' do
+    it { should belong_to(:requester).class_name('User') }
+    it { should belong_to(:assignee).class_name('User').optional }
   end
 
-  it "is invalid without a title" do
-    ticket = Ticket.new(description: "No title")
-    expect(ticket).not_to be_valid
+  describe 'enums' do
+    it { should define_enum_for(:status).with_values(open: 0, pending: 1, resolved: 2, closed: 3) }
+    it { should define_enum_for(:priority).with_values(low: 0, normal: 1, high: 2) }
   end
 
-  it "is invalid without a description" do
-    ticket = Ticket.new(title: "No description")
-    expect(ticket).not_to be_valid
+  describe 'validations' do
+    it { should validate_presence_of(:subject) }
+    it { should validate_presence_of(:description) }
+    it { should validate_presence_of(:status) }
+    it { should validate_presence_of(:priority) }
+    it { should validate_presence_of(:requester) }
+  end
+
+  describe '#set_closed_at' do
+    context 'when status changes to closed' do
+      it 'sets closed_at timestamp' do
+        ticket.update(status: :closed)
+        expect(ticket.closed_at).to be_present
+      end
+    end
+
+    context 'when status changes from closed to another' do
+      it 'clears closed_at timestamp' do
+        ticket.update(status: :closed)
+        ticket.update(status: :open)
+        expect(ticket.closed_at).to be_nil
+      end
+    end
   end
 end
