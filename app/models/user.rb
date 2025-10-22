@@ -16,25 +16,37 @@ class User < ApplicationRecord
   def self.from_omniauth(auth)
     raise ArgumentError, "auth must include provider and uid" unless auth && auth["provider"] && auth["uid"]
 
-    user  = find_or_initialize_by(provider: auth["provider"], uid: auth["uid"])
     info  = auth["info"] || {}
     creds = auth["credentials"] || {}
+    email = info["email"].to_s.strip.downcase
 
-    user.email     = info["email"] if info["email"].present?
+    # Prefer existing identity, else fall back to same-email user, else new user
+    user = find_by(provider: auth["provider"], uid: auth["uid"]) ||
+          (email.present? && find_by(email: email)) ||
+          new(role: :user) # ensure role is set if you validate presence
+
+    # If this user didn’t have an identity yet, attach it
+    user.provider = auth["provider"]
+    user.uid      = auth["uid"]
+
+    user.email     = email if email.present?
     user.name      = info["name"]  if info["name"].present?
     user.image_url = info["image"] if info["image"].present?
 
-    user.access_token  = creds["token"]         if creds["token"].present?
-    user.refresh_token = creds["refresh_token"] if creds["refresh_token"].present?
-
-    if creds["expires_at"].present?
-      user.access_token_expires_at = case expires_at = creds["expires_at"]
-      when Numeric then Time.at(expires_at)
-      when String  then Time.parse(expires_at)
-      when Time    then expires_at
-      else
-                                       expires_at # let AR try to cast
-      end
+    if creds["token"].present?
+      user.access_token = creds["token"]
+    end
+    if creds["refresh_token"].present?
+      user.refresh_token = creds["refresh_token"]
+    end
+    if (ea = creds["expires_at"]).present?
+      user.access_token_expires_at =
+        case ea
+        when Numeric then Time.at(ea)
+        when String  then Time.parse(ea)
+        when Time    then ea
+        else ea
+        end
     end
 
     user.save!

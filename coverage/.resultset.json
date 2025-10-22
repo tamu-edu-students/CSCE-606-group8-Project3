@@ -1,25 +1,25 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/helpers/application_helper.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/helpers/application_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/helpers/home_helper.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/helpers/home_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/helpers/tickets_helper.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/helpers/tickets_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/models/setting.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/models/setting.rb": {
         "lines": [
           1,
           1,
@@ -42,14 +42,14 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/models/application_record.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/models/application_record.rb": {
         "lines": [
           1,
           1,
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/models/ticket.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/models/ticket.rb": {
         "lines": [
           1,
           1,
@@ -78,7 +78,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/models/user.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/models/user.rb": {
         "lines": [
           null,
           1,
@@ -149,7 +149,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/policies/ticket_policy.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/policies/ticket_policy.rb": {
         "lines": [
           1,
           1,
@@ -201,7 +201,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/policies/application_policy.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/policies/application_policy.rb": {
         "lines": [
           1,
           1,
@@ -260,7 +260,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/controllers/tickets_controller.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/controllers/tickets_controller.rb": {
         "lines": [
           1,
           1,
@@ -349,7 +349,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/controllers/application_controller.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/controllers/application_controller.rb": {
         "lines": [
           1,
           null,
@@ -390,7 +390,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/controllers/home_controller.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/controllers/home_controller.rb": {
         "lines": [
           1,
           1,
@@ -398,7 +398,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/controllers/sessions_controller.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/controllers/sessions_controller.rb": {
         "lines": [
           1,
           null,
@@ -436,7 +436,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/controllers/users_controller.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/controllers/users_controller.rb": {
         "lines": [
           1,
           1,
@@ -495,7 +495,7 @@
           null
         ]
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/jobs/application_job.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/jobs/application_job.rb": {
         "lines": [
           0,
           null,
@@ -507,7 +507,7 @@
         ],
         "branches": {}
       },
-      "/Users/felix/Documents/606/project2/CSCE-606-group6-Project2/app/mailers/application_mailer.rb": {
+      "/home/keegan-smith/coding/school/CSCE-606/CSCE-606-group6-Project2/app/mailers/application_mailer.rb": {
         "lines": [
           0,
           0,
@@ -517,6 +517,6 @@
         "branches": {}
       }
     },
-    "timestamp": 1761007003
+    "timestamp": 1761091560
   }
 }
