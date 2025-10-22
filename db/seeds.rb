@@ -14,7 +14,7 @@ user = User.find_or_initialize_by(
 
 user.assign_attributes(
   email:    "keeganasmith2003@tamu.edu",
-  name:     "Keegana Smith",
+  name:     "Keegan Smith",
   image_url: "https://example.com/keegana.png",
   role:     :sysadmin
 )

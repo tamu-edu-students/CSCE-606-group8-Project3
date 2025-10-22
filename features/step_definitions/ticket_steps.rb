@@ -1,6 +1,10 @@
 # features/step_definitions/ticket_steps.rb
 
 # Navigation steps
+Given("I am on the home page") do
+  visit root_path
+end
+
 Given("I am on the new ticket page") do
   visit new_ticket_path
 end

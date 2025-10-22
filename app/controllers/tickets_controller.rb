@@ -13,7 +13,7 @@ class TicketsController < ApplicationController
   end
 
   def new
-    @ticket = Ticket.new
+    @ticket = Ticket.new(status: "open") # default status
     authorize @ticket
   end
 
