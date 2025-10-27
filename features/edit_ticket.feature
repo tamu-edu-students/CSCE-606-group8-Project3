@@ -6,8 +6,8 @@ Feature: Edit Ticket
   Background:
     Given the following tickets exist:
       | subject       | description           | status | priority | category | requester_email       |
-  | Password Bug  | Old description text  | open   | low      | General  | testuser@example.com |
-  And I log in with Google as uid "12345", email "requester@example.com", name "Test Requester"
+      | Password Bug  | Old description text  | open   | low      | Technical Issue | testuser@example.com |
+  And I log in with Google as uid "12345", email "testuser@example.com", name "Test Requester"
 
   # --- Core scenario: editing description ---
   Scenario: Successfully editing the ticket description
@@ -28,15 +28,15 @@ Feature: Edit Ticket
   # --- Additional scenario: editing priority ---
   Scenario: Successfully changing the ticket priority
     Given I am on the edit page for "Password Bug"
-    When I select "high" from "Priority"
+    When I select "High" from "Priority"
     And I press "Update Ticket"
     Then I should see "Ticket was successfully updated"
-    And I should see "high"
+    And I should see "High"
 
   # --- Additional scenario: editing category ---
   Scenario: Successfully editing the ticket category
     Given I am on the edit page for "Password Bug"
-    When I fill in "Category" with "Account"
+    When I select "Account Access" from "Category"
     And I press "Update Ticket"
     Then I should see "Ticket was successfully updated"
     And I should see "Account"
