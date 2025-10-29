@@ -72,6 +72,7 @@ group :test do
   gem "simplecov", require: false
   gem "rack_session_access"
 end
+gem "pg", "~> 1.5"
 
 gem "omniauth"
 gem "omniauth-rails_csrf_protection"
