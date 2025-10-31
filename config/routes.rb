@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :tickets do
     member do
       patch :assign
+      patch :approve
+      patch :reject
       patch :close
     end
     resources :comments, only: :create

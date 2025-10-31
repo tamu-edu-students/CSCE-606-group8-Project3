@@ -30,6 +30,19 @@
       <%= form.select :category, Ticket::CATEGORY_OPTIONS, { prompt: "Select a category" }, { class: "category-select" } %>
     </div>
 
+    <%# Approval editable by staff/admin only %>
+    <% if respond_to?(:current_user) && (current_user&.agent? || current_user&.admin?) %>
+      <div class="form-field">
+        <%= form.label :approval_status, "Approval status" %>
+        <%= form.select :approval_status, Ticket.approval_statuses.keys.map { |k| [k.titleize, k] }, {}, { class: "form-select" } %>
+      </div>
+
+      <div class="form-field form-field--wide">
+        <%= form.label :approval_reason, "Rejection reason (if rejecting)" %>
+        <%= form.text_area :approval_reason, rows: 3 %>
+      </div>
+    <% end %>
+
     <div class="form-field form-field--wide">
       <%= form.label :description %>
       <%= form.text_area :description, rows: 10, cols: 80 %>

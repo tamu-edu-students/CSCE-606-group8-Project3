@@ -7,7 +7,25 @@
         <h2 class="ticket-card__title"><%= link_to ticket.subject, ticket %></h2>
       </header>
       <div class="ticket-card__meta">
-        <p><strong>Status:</strong> <span class="status-badge status-<%= ticket.status %>"><%= ticket.status.titleize %></span></p>
+        <p>
+          <strong>Status:</strong>
+          <span class="status-badge status-<%= ticket.status %>"><%= ticket.status.titleize %></span>
+          <%# Approval indicator: emoji + label for quick glance %>
+          <span class="approval-badge approval-<%= ticket.approval_status %>" aria-hidden="true">
+            <% case ticket.approval_status.to_s %>
+            <% when 'approved' %>
+              ✅
+          <% when 'rejected' %>
+              <!-- Inline SVG red cross so it renders red across platforms (not affected by emoji fallback) -->
+              <svg class="approval-icon approval-rejected" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-left:6px;">
+                <path fill="#c82333" d="M18.3 5.7a1 1 0 0 0-1.4 0L12 10.6 7.1 5.7A1 1 0 1 0 5.7 7.1L10.6 12l-4.9 4.9a1 1 0 1 0 1.4 1.4L12 13.4l4.9 4.9a1 1 0 0 0 1.4-1.4L13.4 12l4.9-4.9a1 1 0 0 0 0-1.4z"/>
+              </svg>
+            <% else %>
+              ⏳
+            <% end %>
+          </span>
+          <span class="sr-only">Approval status: <%= ticket.approval_status.to_s.titleize %></span>
+        </p>
         <p><strong>Priority:</strong> <%= ticket.priority.present? ? ticket.priority.titleize : "Not set" %></p>
         <p><strong>Category:</strong> <%= ticket.category %></p>
       </div>

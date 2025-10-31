@@ -7,10 +7,12 @@ class Ticket < ApplicationRecord
 
   belongs_to :requester, class_name: "User"
   belongs_to :assignee, class_name: "User", optional: true
+  belongs_to :approver, class_name: "User", optional: true
   has_many :comments, dependent: :destroy
 
   enum :status, { open: 0, in_progress: 1, on_hold: 2, resolved: 3 }, validate: true
   enum :priority, { low: 0, medium: 1, high: 2 }, validate: true
+  enum :approval_status, { pending: 0, approved: 1, rejected: 2 }, prefix: :approval
 
   validates :subject, presence: true
   validates :description, presence: true
@@ -18,6 +20,7 @@ class Ticket < ApplicationRecord
   validates :priority, presence: true
   validates :category, presence: true, inclusion: { in: CATEGORY_OPTIONS }
   validates :requester, presence: true
+  validates :approval_reason, presence: true, if: :approval_rejected?
 
   before_save :track_resolution_timestamp
   after_initialize :set_default_priority, if: :new_record?
@@ -39,5 +42,24 @@ class Ticket < ApplicationRecord
     else
       self.closed_at = nil
     end
+  end
+  # Convenience methods for staff actions
+  public
+
+  def approve!(user)
+    self.approval_status = :approved
+    self.approver = user
+    # Clear any previous rejection reason when approving
+    self.approval_reason = nil
+    self.approved_at = Time.current
+    save!
+  end
+
+  def reject!(user, reason)
+    self.approval_status = :rejected
+    self.approver = user
+    self.approval_reason = reason
+    self.approved_at = Time.current
+    save!
   end
 end

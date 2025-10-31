@@ -6,6 +6,15 @@
   </nav>
 
   <h1><%= @ticket.subject %></h1>
+
+  <p><strong>Status:</strong> <%= @ticket.status.to_s.titleize %></p>
+  <p><strong>Priority:</strong> <%= @ticket.priority %></p>
+  <p><strong>Requester:</strong> <%= @ticket.requester.display_name %></p>
+  <p><strong>Assignee:</strong> <%= @ticket.assignee&.display_name || 'Unassigned' %></p>
+  <p><strong>Category:</strong> <%= @ticket.category %></p>
+  <p><strong>Description:</strong></p>
+  <p><%= @ticket.description %></p>
+
   <div class="headline-bar">
     <div class="headline-left">
       <%= link_to "Back", tickets_path, class: "btn btn-secondary" %>
@@ -20,6 +29,9 @@
       <% end %>
     </div>
   </div>
+
+  <%# Approval controls for staff/sysadmin (approve / reject) %>
+  <%= render 'approval_controls' %>
 
   <section class="ticket-details">
     <dl class="details-list">
@@ -120,4 +132,8 @@
       <% end %>
     </section>
   <% end %>
+
+  <%= link_to 'Edit', edit_ticket_path(@ticket) %>
+  <%= link_to 'Back', tickets_path %>
+  <%= link_to 'Destroy', ticket_path(@ticket), method: :delete, data: { confirm: 'Are you sure?' } %>
 </div>

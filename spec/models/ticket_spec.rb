@@ -1,6 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
+  let(:requester) { User.create!(provider: 'seed', uid: SecureRandom.uuid, email: 'req@example.com', role: 'user', name: 'Requester') }
+  let(:staff) { User.create!(provider: 'google_oauth2', uid: 'agent-test', email: 'agent@example.com', role: 'staff', name: 'Agent') }
+
+  it 'can be approved by staff' do
+    ticket = Ticket.create!(subject: 'T', description: 'D', category: Ticket::CATEGORY_OPTIONS.first, requester: requester)
+    expect(ticket.approval_status).to eq('pending')
+    ticket.approve!(staff)
+    expect(ticket.approval_status).to eq('approved')
+    expect(ticket.approver).to eq(staff)
+    expect(ticket.approved_at).not_to be_nil
+  end
+
+  it 'can be rejected by staff with a reason' do
+    ticket = Ticket.create!(subject: 'T2', description: 'D2', category: Ticket::CATEGORY_OPTIONS.first, requester: requester)
+    ticket.reject!(staff, 'Not valid')
+    expect(ticket.approval_status).to eq('rejected')
+    expect(ticket.approval_reason).to eq('Not valid')
+    expect(ticket.approver).to eq(staff)
+  end
+end
+require 'rails_helper'
+
+RSpec.describe Ticket, type: :model do
   let(:requester) { FactoryBot.create(:user, role: :user) }
   let(:agent) { FactoryBot.create(:user, role: :staff) }
   let(:ticket) { FactoryBot.create(:ticket, requester: requester, assignee: agent) }

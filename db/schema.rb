@@ -40,6 +40,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_152900) do
     t.datetime "closed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "approval_status", default: 0, null: false
+    t.text "approval_reason"
+    t.integer "approver_id"
+    t.datetime "approved_at"
+    t.index ["approver_id"], name: "index_tickets_on_approver_id"
     t.index ["assignee_id"], name: "index_tickets_on_assignee_id"
     t.index ["requester_id"], name: "index_tickets_on_requester_id"
   end
@@ -63,6 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_152900) do
 
   add_foreign_key "comments", "tickets"
   add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "tickets", "users", column: "approver_id"
   add_foreign_key "tickets", "users", column: "assignee_id"
   add_foreign_key "tickets", "users", column: "requester_id"
 end
