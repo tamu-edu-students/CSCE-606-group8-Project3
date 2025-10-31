@@ -54,7 +54,7 @@ class TicketsController < ApplicationController
     if (current_user&.agent? || current_user&.admin?) && params.dig(:ticket, :approval_status).present?
       approval_param = params.dig(:ticket, :approval_status).to_s
       case approval_param
-      when 'approved'
+      when "approved"
         begin
           @ticket.approve!(current_user)
           redirect_to @ticket, notice: "Ticket was successfully updated." and return
@@ -62,7 +62,7 @@ class TicketsController < ApplicationController
           @ticket.errors.add(:base, "Could not approve ticket: #{e.message}")
           render :edit, status: :unprocessable_content and return
         end
-      when 'rejected'
+      when "rejected"
         reason = params.dig(:ticket, :approval_reason)
         if reason.blank?
           # Provide a clearer, user-friendly message when staff attempt to reject without a reason
@@ -77,7 +77,7 @@ class TicketsController < ApplicationController
           @ticket.errors.add(:base, "Could not reject ticket: #{e.message}")
           render :edit, status: :unprocessable_content and return
         end
-      when 'pending'
+      when "pending"
         # reset approval fields
         @ticket.update(approval_status: :pending, approver: nil, approval_reason: nil, approved_at: nil)
         redirect_to @ticket, notice: "Ticket was successfully updated." and return
