@@ -5,6 +5,14 @@
 # files.
 
 
+require 'simplecov'
+SimpleCov.command_name 'Cucumber'
+SimpleCov.enable_coverage :branch
+SimpleCov.start 'rails' do
+  add_filter '/spec/'
+end
+
+
 require 'cucumber/rails'
 # require 'warden/test/helpers'
 # require 'rack_session_access/capybara'

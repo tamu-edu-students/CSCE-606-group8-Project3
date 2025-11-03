@@ -1,6 +1,8 @@
 require 'simplecov'
+SimpleCov.command_name 'RSpec'
 require "webdrivers/chromedriver"
 
+SimpleCov.enable_coverage :branch
 SimpleCov.start 'rails' do
   add_filter '/spec/'  # optional: ignore spec files
 end
