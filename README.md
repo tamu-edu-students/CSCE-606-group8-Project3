@@ -101,6 +101,78 @@ Key points:
 - Single ticket page combines status, comments, attachments, and assignment controls
 - Focus on accessibility and lightweight JS—app remains usable with minimal JS
 
+## User Guide — How to use the Ticketing System (end-user)
+
+This guide walks an end-user through the common flows in the application (login, file a ticket, comment, attach files, assign/accept work, and basic team/approval actions).
+
+1. Signing in
+
+- Open the app in a browser (e.g., `http://localhost:3000`).
+- Click the "Sign in" / "Sign in with Google" (or "Sign in with GitHub") button on the navbar. This uses OmniAuth (Devise + OmniAuth) to authenticate you.
+- First-time logins create a new user record using the provider profile. If you need to seed demo users, run `rails db:seed` (project-specific seed behavior may vary).
+
+2. Dashboard & navigation
+
+- After sign-in you land on the dashboard or tickets index. The navbar changes based on your role (requester, agent, admin).
+- Use the top-level navigation to access Tickets, Teams, Users (admins), and Settings.
+
+3. Creating a ticket (Requester)
+
+- Click "New Ticket" or the "Create Ticket" button on the dashboard.
+- Fill in required fields: title, description, priority, and any metadata your deployment requires (e.g., project or category).
+- Optionally attach files using the Attachments control; ActiveStorage will handle uploads.
+- Choose whether the ticket is public or internal (if that option is shown to you). Requesters normally create public tickets; internal-only visibility is typically reserved for staff/agents.
+- Submit the form — the ticket will appear in the Tickets list.
+
+4. Viewing and commenting
+
+- Open a ticket to view its full details. The page shows the current status, assignee, priority, and comment thread.
+- Add a public comment to collaborate with requesters and agents. If you are an agent or admin you may also be able to add an internal comment (visible only to staff). The comment form has a visibility toggle (Public/Internal) if internal comments are supported.
+- Attach files to comments where helpful (screenshots, logs). Attachments are uploaded via ActiveStorage and shown inline or as download links.
+
+5. Assignment and claiming work (Agent / Admin)
+
+- Manual assignment: From the ticket page, use the "Assignee" dropdown to assign the ticket to an agent. Admins and authorized agents will see this control.
+- Claiming: Optionally click a "Claim" or "Take" button (if implemented) to assign the ticket to yourself quickly.
+- Round-robin: If Settings has auto-assignment enabled, new tickets are assigned automatically according to the rotation state stored in `Setting`.
+
+6. Approval workflow (Admin / Agent)
+
+- Certain tickets may require approval. Use the Approve/Reject controls visible to staff when the ticket's workflow requires it.
+- Approval actions record the approver and timestamp so actions are auditable.
+
+7. Teams and memberships (Admin)
+
+- Admins can create `Teams` and add or remove `TeamMemberships` to organize agents.
+- Team scoping may limit visible tickets to members of the team; use teams to group related work.
+
+8. Settings and toggles (Admin)
+
+- Open Settings to toggle assignment strategy (manual vs. round-robin) and other feature flags.
+- The round-robin rotation index is persisted so reassignment resumes fairly across sessions.
+
+9. Searching and filtering tickets
+
+- Use the Tickets index filters to search by status, assignee, priority, team, or requester.
+- Saved filters or bookmarks may be available depending on UI features.
+
+10. Common error cases & troubleshooting
+
+- Login errors: Check OAuth credentials in `.env`, ensure authorized redirect URIs in the provider console, and confirm the callback URL matches the app.
+- Attachment errors: Ensure storage is configured (local disk for development) and that file size limits are respected.
+- Authorization errors: If you receive "Not Authorized" pages, verify your role and team membership; Pundit policies enforce access.
+
+11. Accessibility & keyboard use
+
+- The UI uses server-rendered HTML and Hotwire—keyboard focus and ARIA attributes are prioritized. Use `Tab` to navigate and `Enter` to submit forms where appropriate.
+
+12. Where to get help
+
+- Check the project README and `docs/adr/` for architecture and decision rationale.
+- For developer help, inspect controller code (`app/controllers/`), Pundit policies (`app/policies/`), and models (`app/models/`) to understand behavior.
+
+---
+
 ## Testing & deployment
 
 - RSpec + FactoryBot for unit and policy tests
@@ -215,4 +287,4 @@ Notes:
 
 ---
 
-If you'd like, I can draft a GitHub Actions workflow that runs RSpec, Cucumber, RuboCop and Brakeman on PRs and stage it for review. I will not commit or push anything unless you ask.
+
