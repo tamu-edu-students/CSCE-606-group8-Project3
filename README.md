@@ -241,7 +241,7 @@ This section shows the minimal steps to get the app running locally and an examp
 ### 2️⃣ Local installation
 
 ```bash
-git clone <https://github.com/tamu-edu-students/CSCE-606-group6-Project2.git>
+git clone https://github.com/tamu-edu-students/CSCE-606-group6-Project2.git
 cd Ticketing-System
 bundle install
 rails db:migrate
