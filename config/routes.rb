@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   resources :users
   resources :tickets do
+    collection do
+      get :mine
+    end
     member do
       patch :assign
       patch :approve
