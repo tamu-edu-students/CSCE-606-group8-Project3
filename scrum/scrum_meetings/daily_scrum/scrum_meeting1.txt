@@ -1,0 +1,6 @@
+tasks assigned:
+
+Keegan - Oauth 
+Mihir - Ticket CRUD
+Harsh - Ticket search
+Yafei - Ticket assignment

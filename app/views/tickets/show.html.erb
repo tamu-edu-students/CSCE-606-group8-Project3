@@ -1,0 +1,147 @@
+<div class="ticket-show">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <%= link_to "Tickets", tickets_path %>
+    <span aria-hidden="true">›</span>
+    <span><%= @ticket.subject %></span>
+  </nav>
+
+  <h1><%= @ticket.subject %></h1>
+  <div class="headline-bar">
+    <div class="headline-left">
+      <%= link_to "Back", tickets_path, class: "btn btn-secondary" %>
+      <%= link_to "Edit", edit_ticket_path(@ticket), class: "btn btn-primary" %>
+    </div>
+    <div class="headline-right">
+      <% if policy(@ticket).close? %>
+        <%= button_to "Mark as Resolved", close_ticket_path(@ticket), method: :patch, data: { confirm: "Mark this ticket as resolved?" }, class: "btn btn-danger-outline" %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Approval controls for staff/sysadmin (approve / reject) %>
+  <%= render 'approval_controls' %>
+
+  <section class="ticket-details">
+    <dl class="details-list">
+      <dt>Status</dt>
+      <dd>
+        <span class="status-badge status-<%= @ticket.status %>"><%= @ticket.status.titleize %></span>
+        <% if policy(@ticket).change_status? %>
+          <div class="status-update-form">
+            <%= form_with(model: @ticket, url: ticket_path(@ticket), method: :patch, local: true) do |form| %>
+              <div class="status-form-row">
+                <%= form.label :status, "Change status", class: "status-form-label" %>
+                <%= form.select :status, Ticket.statuses.keys.map { |key| [key.titleize, key] }, {}, class: "form-select" %>
+                <%= form.submit "Update Status", class: "btn btn-primary btn-sm" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </dd>
+
+      <dt>Priority</dt>
+      <dd><%= @ticket.priority.present? ? @ticket.priority.titleize : "Not set" %></dd>
+
+      <dt>Ticket Type</dt>
+      <dd><%= @ticket.category %></dd>
+
+      <dt>Submitter</dt>
+      <dd><%= @ticket.requester.display_name %></dd>
+
+      <dt>Assignee</dt>
+      <dd><%= @ticket.assignee&.display_name || "Unassigned" %></dd>
+
+      <% if @ticket.closed_at.present? %>
+        <dt>Resolved At</dt>
+        <dd><%= l(@ticket.closed_at, format: :long) %></dd>
+      <% end %>
+    </dl>
+  </section>
+
+  <section class="ticket-history">
+    <h2>History</h2>
+    <ul>
+      <li>Created At: <%= l(@ticket.created_at, format: :long) %></li>
+      <li>Updated At: <%= l(@ticket.updated_at, format: :long) %></li>
+    </ul>
+  </section>
+
+  <section class="ticket-description">
+    <h2>Description</h2>
+    <div class="prose"><%= simple_format(@ticket.description) %></div>
+  </section>
+
+  <% if @ticket.attachments.attached? %>
+    <section class="ticket-attachments">
+      <h2>Attachments</h2>
+      <ul>
+        <% @ticket.attachments.each do |att| %>
+          <li>
+            <%= link_to att.filename.to_s, url_for(att), target: "_blank", rel: "noopener" %>
+            (<%= number_to_human_size(att.byte_size) %>)
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if policy(@ticket).assign? %>
+    <section class="assign-section">
+      <div class="assign-card">
+        <%= form_with(model: @ticket, url: assign_ticket_path(@ticket), method: :patch, local: true) do |form| %>
+          <div class="field">
+            <%= form.label :team_id, "Assign to team:" %>
+            <%= form.collection_select :team_id, Team.order(:name), :id, :name, include_blank: "Unassigned" %>
+          </div>
+
+          <div class="field">
+            <%= form.label :assignee_id, "Assign to agent:" %>
+            <% team_members = @ticket.team ? @ticket.team.members.order(:name) : User.where(role: [:staff, :agent]).order(:name) %>
+            <%= form.collection_select :assignee_id, team_members, :id, :name, include_blank: "Unassigned" %>
+          </div>
+          <div class="actions-row">
+            <%= form.submit "Assign", class: "btn" %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="ticket-comments">
+    <h2>Comments (<%= @comments.size %>)</h2>
+    <% if @comments.any? %>
+      <div class="comments-list">
+        <%= render @comments %>
+      </div>
+    <% else %>
+      <p>No comments yet.</p>
+    <% end %>
+  </section>
+
+  <% if policy(@comment).create? %>
+    <section class="comment-form">
+      <h3>Add a Comment</h3>
+      <%= form_with(model: [@ticket, @comment], local: true, html: { class: "form-card" }) do |form| %>
+        <div class="field">
+          <%= form.label :body, "Comment" %>
+          <%= form.text_area :body, rows: 10, cols: 80 %>
+        </div>
+
+        <% if current_user.agent? || current_user.admin? %>
+          <div class="field">
+            <%= form.label :visibility %>
+            <%= form.select :visibility, Comment.visibilities.keys.map { |v| [v.titleize, v] } %>
+          </div>
+        <% end %>
+
+        <div class="actions-row">
+          <%= form.submit "Post Comment", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if policy(@ticket).destroy? %>
+    <%= button_to "Destroy", ticket_path(@ticket), method: :delete, data: { confirm: "Delete this ticket?" }, class: "btn btn-danger" %>
+  <% end %>
+</div>

@@ -1,0 +1,180 @@
+Ticket Management System — MVP Plan 
+1) Scope (MVP Only)
+OAuth 2.0 login (Google or GitHub).
+
+
+Create/read/update tickets.
+
+
+Assign tickets to agents (manual + simple auto round-robin).
+
+
+Comment on tickets (public vs. internal).
+
+
+Basic search/filter list.
+
+
+Minimal roles: requester, agent, admin.
+
+
+2) Tech (kept simple)
+Ruby on Rails 7/8, PostgreSQL (Heroku Postgres).
+
+
+Auth: Devise (omni authable) + OmniAuth Google/GitHub.
+
+
+AuthZ: Pundit (light policies).
+
+
+Uploads/Notifications/SLA: omitted for MVP.
+
+
+Testing: RSpec + FactoryBot (core flows only).
+
+
+3) Data Model (lean)
+User(id, name, email, role: enum{requester, agent, admin}, provider, uid, avatar_url)
+
+
+Ticket(id, subject, description, status: enum{open, pending, resolved, closed}, priority: enum{low, normal, high}, requester_id, assignee_id, category, closed_at)
+
+
+Comment(id, ticket_id, author_id, body, visibility: enum{public, internal})
+
+
+Setting(key, value JSON) — store assignment_strategy = {round_robin | manual} (optional)
+
+
+4) Key Flows
+OAuth Login → Devise callback creates/updates User, default role=requester unless admin whitelists email domain.
+
+
+Ticket CRUD
+
+
+Requester creates ticket; can edit/close own ticket while open.
+
+
+Agent/Admin can edit status/priority/assignee.
+
+
+Assignment
+
+
+Manual: Agent/Admin chooses assignee.
+
+
+Auto (optional toggle): round-robin among active agents on create (synchronous; no jobs).
+
+
+Comments
+
+
+Public comments visible to requester + agents.
+
+
+Internal comments visible to agents/admin only.
+
+
+5) Screens (server-rendered Rails)
+/: My Tickets (requester) or Queue (agent): filters by status/assignee.
+
+
+/tickets/new: subject, description, priority.
+
+
+/tickets/:id: details, status/assignee controls (if agent/admin), comments pane.
+
+
+/admin/users: list + role change (admin only).
+
+
+/admin/settings: toggle assignment strategy (optional).
+
+
+6) Routes (representative)
+OAuth: /users/auth/:provider, /users/auth/:provider/callback
+
+
+Tickets: resources :tickets do; resources :comments, only: [:create]; post :assign, on: :member; end
+
+
+Admin: namespace :admin do; resources :users, only: [:index, :update]; resource :settings, only: [:show, :update]; end
+
+
+7) Authorization (minimal rules)
+Requester: CRUD only on own tickets; create public comments on own tickets.
+
+
+Agent: read all; update status/priority/assignee; add public/internal comments.
+
+
+Admin: manage users (role), toggle settings.
+
+
+8) Acceptance Criteria (MVP)
+Login: User can sign in via Google/GitHub; returning users recognized.
+
+
+Create Ticket: Subject+description required; ticket appears in “My Tickets.”
+
+
+List & Filter: Filter by status; agents can filter by assignee.
+
+
+Assign: Admin/Agent can assign; if auto-assign on, new tickets rotate among agents.
+
+
+Status Flow: open → pending → resolved → closed; transitions recorded (updated_at).
+
+
+Comments: Public/internal respected in UI (internal hidden from requester).
+
+
+9) Testing (just the essentials)
+Model validations/enums.
+
+
+Pundit policy specs for User roles.
+
+
+Request/system specs: OAuth callback happy path; create → assign → comment → resolve → close.
+
+
+10) Heroku Setup Checklist
+rails new (postgresql), add Devise, OmniAuth (google-oauth2 or github).
+
+
+Config vars: GOOGLE_CLIENT_ID/SECRET (or GitHub), HOST for callback.
+
+
+heroku create, add Heroku Postgres, rails db:migrate, seed admin/agents.
+
+
+Force SSL in production; basic Lograge on (optional).
+
+
+11) Milestones (2 weeks)
+Day 1–2: Rails app, Devise + OmniAuth, User model/roles, basic nav.
+
+
+Day 3–5: Tickets + Comments models/controllers/views; requester flows.
+
+
+Day 6–7: Agent queue, assignment (manual + simple round-robin), filters.
+
+
+Day 8–9: Pundit policies, admin user management, minimal settings.
+
+
+Day 10–12: Tests for core flows, polish views, seeds.
+
+
+Day 13–14: Heroku deploy, smoke tests, docs (README with setup).
+
+
+12) Nice-to-have (post-MVP, optional)
+Full-text search (PG), tags, simple CSV export, basic metrics page.
+

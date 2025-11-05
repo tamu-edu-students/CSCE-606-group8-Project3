@@ -1,0 +1,41 @@
+<%# Approval controls and read-only view.
+    - Agents/admins: show approve/reject controls when pending, otherwise show status and details.
+    - Non-staff (including the requester): show read-only approval status/details so the ticket owner can see the result.
+    Guard with respond_to?(:current_user) in view specs where helper may be undefined. %>
+
+<% if respond_to?(:current_user) && (current_user&.agent? || current_user&.admin?) %>
+  <div class="approval-controls">
+    <% if @ticket.approval_status == "pending" || @ticket.approval_status == :pending %>
+      <%= form_with url: approve_ticket_path(@ticket), method: :patch, local: true do %>
+        <%= submit_tag "Approve", class: "btn btn-primary" %>
+      <% end %>
+
+      <%= form_with url: reject_ticket_path(@ticket), method: :patch, local: true do |f| %>
+        <div>
+          <%= f.label :approval_reason, "Rejection reason (required)" %><br/>
+          <%= f.text_area :approval_reason, rows: 3 %>
+        </div>
+        <div>
+          <%= f.submit "Reject", class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    <% else %>
+      <p><strong>Approval status:</strong> <%= @ticket.approval_status.to_s.titleize %></p>
+      <% if @ticket.approval_reason.present? %>
+        <p><strong>Reason:</strong> <%= @ticket.approval_reason %></p>
+      <% end %>
+      <p><strong>Approver:</strong> <%= @ticket.approver&.display_name %></p>
+    <% end %>
+  </div>
+<% else %>
+  <%# Read-only view for non-staff (ticket requester) - show status and optional reason/approver. %>
+  <div class="approval-controls approval-readonly">
+    <p><strong>Approval status:</strong> <%= @ticket.approval_status.to_s.titleize %></p>
+    <% if @ticket.approval_reason.present? %>
+      <p><strong>Reason:</strong> <%= @ticket.approval_reason %></p>
+    <% end %>
+    <% if @ticket.approver.present? %>
+      <p><strong>Approver:</strong> <%= @ticket.approver.display_name %></p>
+    <% end %>
+  </div>
+<% end %>

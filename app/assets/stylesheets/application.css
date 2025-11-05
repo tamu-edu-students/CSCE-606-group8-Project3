@@ -1,0 +1,341 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+/* Minimal ticket show layout (no JS required) */
+.ticket-show {
+  max-width: 60rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.breadcrumbs {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.breadcrumbs a {
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.ticket-details {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.details-list {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  row-gap: 0.5rem;
+  column-gap: 1rem;
+  margin: 0;
+}
+
+.details-list dt {
+  font-weight: 600;
+  color: #333;
+}
+
+.details-list dd {
+  margin: 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  background: #eaeaea;
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.status-open { background: #d9f2e0; color: #0f5a28; }
+.status-in_progress { background: #fff3c4; color: #593d00; }
+.status-on_hold { background: #f7e7d6; color: #6b3d0f; }
+.status-resolved { background: #dce8ff; color: #1b3b7a; }
+
+.status-update-form {
+  margin-top: 0.5rem;
+}
+
+.status-form-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-form-label {
+  font-weight: 600;
+}
+
+.status-form-row .form-select {
+  max-width: 220px;
+}
+
+.ticket-history,
+.ticket-description,
+.ticket-comments,
+.comment-form {
+  margin-top: 1.25rem;
+}
+
+.prose p { margin: 0 0 0.75rem; }
+
+.ticket-actions {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fcfcfc;
+}
+
+.actions-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.buttons-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.75rem; }
+.actions-bar { display:flex; justify-content:space-between; align-items:center; gap: .5rem; margin-bottom:.5rem; }
+.actions-left { display:flex; gap:.5rem; flex-wrap:wrap; }
+.actions-right { display:flex; gap:.5rem; }
+.headline-actions { display:flex; justify-content:flex-end; margin-bottom:.75rem; }
+.headline-bar { display:flex; justify-content:space-between; align-items:center; gap:.75rem; margin: .25rem 0 1rem; }
+.headline-left { display:flex; gap:.5rem; }
+.headline-right { display:flex; gap:.5rem; }
+
+.btn,
+button.btn,
+input[type="submit"].btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  color: #222;
+  background: #fff;
+  font-size: 1rem;
+  line-height: 1.25;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.btn:hover,
+button.btn:hover,
+input[type="submit"].btn:hover { background: #f5f5f5; }
+.btn-secondary { color: #333; }
+.btn-primary { background:#0e7afe; color:#fff; border-color:#0e7afe; }
+.btn-primary:hover { background:#0b67d6; }
+.btn-outline { background:#fff; color:#111; border-color:#bbb; }
+.btn-danger-outline { background:#fff; color:#7a1f1f; border-color:#e3b4b4; }
+.btn-danger-outline:hover { background:#fff5f5; }
+
+/* Keep Edit button text black on hover in the ticket header */
+.headline-left .btn-primary:hover { color: #111; }
+
+.assign-card, .close-card, .danger-zone {
+  margin-top: 0.5rem;
+}
+
+/* Panel styling for inline cards */
+.assign-card, .comment-form {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fff;
+  padding: 0.75rem;
+}
+
+.comments-list { margin-top: 0.5rem; }
+
+.comment { padding: 0.5rem 0; }
+.comment + .comment { border-top: 1px solid #eee; }
+.comment-meta { color: #555; font-size: 0.9rem; margin-bottom: 0.25rem; }
+.comment-author { font-weight: 600; }
+.comment-visibility { color: #555; }
+.comment-time { color: #555; margin-left: 0.5rem; }
+
+.field { margin-bottom: 0.75rem; }
+.field label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.actions { margin-top: 0.5rem; }
+
+/* Tickets index */
+.tickets-index {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.ticket-card {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  background: #fff;
+}
+
+.ticket-card__title a { text-decoration: none; }
+.ticket-card__title a:hover { text-decoration: underline; }
+.ticket-card__meta { display: flex; flex-wrap: wrap; gap: 1rem; }
+.ticket-card__excerpt { margin: 0.5rem 0; color: #444; }
+.ticket-card__actions { display: flex; gap: 0.5rem; }
+
+.btn-danger { border-color: #e3b4b4; color: #7a1f1f; }
+
+.page-actions { margin-top: 1rem; }
+
+/* Ticket form */
+.form-card {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 1rem;
+  background: #fff;
+  max-width: 60rem;
+}
+
+.form-errors { margin-bottom: 0.75rem; color: #7a1f1f; }
+.form-error { padding: 0.25rem 0; }
+.form-field { margin-bottom: 0.75rem; }
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem 1rem; align-items: start; }
+.form-field--wide { grid-column: 1 / -1; }
+.form-field { min-width: 0; }
+.form-field input,
+.form-field select,
+.form-field textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
+@media (min-width: 700px) {
+  .form-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* New/Edit ticket containers */
+.ticket-new, .ticket-edit {
+  max-width: 60rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+/* Comments section enhancements */
+.ticket-comments { margin-top: 1.5rem; }
+.ticket-comments h2 { margin-bottom: 0.5rem; }
+.comment { background: #fff; border-radius: 4px; }
+.comment-body { color: #333; }
+.comment-form { margin-top: 1rem; }
+.comment-form .actions { margin-top: 0.5rem; }
+
+/* Home index container */
+.home-index {
+  max-width: 60rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+/* Navbar and layout */
+.navbar { display:flex; justify-content:space-between; align-items:center; padding:.75rem 1rem; border-bottom:1px solid #e5e7eb; }
+.brand { font-weight:600; text-decoration:none; margin-right:1rem; }
+.nav-link { margin-right:.75rem; text-decoration:none; color:#111827; }
+.nav-right, .nav-left { display:flex; align-items:center; gap:.5rem; }
+.btn { padding:.45rem .8rem; border:1px solid #d1d5db; border-radius:.5rem; text-decoration:none; display:inline-block; }
+.btn:hover { background:#f9fafb; }
+.container { max-width: 70rem; margin: 1.5rem auto; padding: 0 1rem; }
+.flash { margin: .75rem 1rem; padding:.5rem .75rem; border:1px solid #e5e7eb; border-radius:.5rem; }
+
+/* Focus visibility for keyboard users */
+a:focus-visible, .nav-link:focus-visible { outline: 3px solid #0e7afe; outline-offset: 2px; text-decoration: underline; }
+.btn:focus-visible, button.btn:focus-visible, input[type="submit"].btn:focus-visible { outline: 3px solid #0e7afe; outline-offset: 2px; }
+.btn-primary:focus-visible { outline-color: #0b67d6; }
+.btn-danger:focus-visible, .btn-danger-outline:focus-visible { outline-color: #7a1f1f; }
+
+/* Base typography */
+body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; color:#111; line-height:1.5; }
+h1 { font-size: 1.75rem; margin: 0 0 0.75rem; }
+h2 { font-size: 1.25rem; margin: 1rem 0 0.5rem; }
+label { font-size: .95rem; }
+input, select, textarea { font-size: 1rem; }
+
+/* Inputs and dropdowns */
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background: #fff;
+}
+.priority-select, .category-select { width: 100%; }
+
+/* Ticket show emphasis */
+.ticket-details { box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+.details-list { row-gap: 0.6rem; column-gap: 1.25rem; }
+.prose { line-height: 1.6; color: #222; }
+.ticket-actions { margin-top: 1.5rem; }
+.actions-bar { gap: .75rem; }
+.comments-list hr { border: none; border-top: 1px solid #eee; margin: 0.5rem 0; }
+
+/* Users show: slightly wider and table layout */
+.user-show { max-width: 64rem; margin: 1.5rem auto; padding: 0 1rem; }
+.details-table { width: 100%; max-width: 48rem; margin: 0 auto; border-collapse: collapse; border: 1px solid #eee; background: #fff; }
+.details-table th, .details-table td { padding: 0.6rem 0.85rem; }
+.details-table th { background: #fafafa; color: #333; font-weight: 600; width: 240px; text-align: left; }
+.details-table td { text-align: center; }
+.details-table tr + tr th, .details-table tr + tr td { border-top: 1px solid #eee; }
+
+
+
+/* Users index table polish */
+
+.users-index .table-wrap { overflow-x: auto; border: 1px solid #eee; border-radius: 6px; background: #fff; }
+.users-index .users-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+.users-index .users-table thead th {
+  position: sticky; top: 0; background: #fafafa; text-align: center;
+  font-weight: 600; color: #333; border-bottom: 1px solid #eee; padding: .6rem .8rem;
+}
+.users-index .users-table td { padding: .55rem .8rem; border-top: 1px solid #f0f0f0; text-align: center; vertical-align: middle; }
+.users-index .users-table tbody tr:nth-child(odd) { background: #fcfcfc; }
+.users-index .users-table tbody tr:hover { background: #f7faff; }
+
+.users-index .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
+.users-index .min-col { width: 220px; }
+.users-index .empty-state { padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 6px; background: #fafafa; }
+
+.role-badge {
+  display: inline-block; padding: .15rem .5rem; border-radius: 999px; font-size: .85rem;
+  border: 1px solid rgba(0,0,0,.06); background: #eee; color: #222; line-height: 1.2;
+}
+.role-user { background: #e7f3ff; color: #103e73; }
+.role-staff { background: #fff3c4; color: #6a4a00; }
+.role-sysadmin { background: #fde2e2; color: #7a1f1f; }
+
+/* Keep existing button styles; just align actions neatly */
+.users-index .actions-row { display: inline-flex; gap: .4rem; flex-wrap: wrap; justify-content: center; }
+
+/* Teams pages */
+.teams-index { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+.team-card { border: 1px solid #eee; border-radius: 6px; padding: 0.75rem 1rem; background: #fff; }
+.team-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.team-card__title a { text-decoration: none; color: #111; }
+.team-card__title a:hover { text-decoration: underline; }
+.team-card__meta { color: #555; font-size: 0.95rem; }
+.team-card__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.team-show { max-width: 60rem; margin: 1.5rem auto; padding: 0 1rem; }
+.team-members { margin-top: 1rem; border: 1px solid #eee; border-radius: 6px; background: #fff; }
+.team-members .member-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; border-top: 1px solid #f5f5f5; }
+.team-members .member-row:first-child { border-top: 0; }
+.team-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.team-form .actions { margin-top: 0.5rem; }
+
+/* a11y helpers */
+.visually-hidden { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }

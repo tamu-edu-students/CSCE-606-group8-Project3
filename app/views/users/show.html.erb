@@ -1,0 +1,61 @@
+<div class="container user-show">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <%= link_to "Users", users_path %>
+    <span aria-hidden="true">›</span>
+    <span>User #<%= @user.id %></span>
+  </nav>
+
+  <h1>User #<%= @user.id %></h1>
+
+  <table class="details-table">
+    <tbody>
+      <tr>
+        <th scope="row">Email</th>
+        <td><%= mail_to @user.email %></td>
+      </tr>
+      <tr>
+        <th scope="row">Name</th>
+        <td><%= @user.name.presence || "—" %></td>
+      </tr>
+      <tr>
+        <th scope="row">Role</th>
+        <td><%= @user.role %></td>
+      </tr>
+      <tr>
+        <th scope="row">Provider</th>
+        <td><%= @user.provider %></td>
+      </tr>
+      <tr>
+        <th scope="row">UID</th>
+        <td><%= @user.uid %></td>
+      </tr>
+      <tr>
+        <th scope="row">Image</th>
+        <td>
+          <% if @user.image_url.present? %>
+            <img src="<%= @user.image_url %>" alt="User image" style="max-height:80px">
+          <% else %>
+            —
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Access Token Expires At</th>
+        <td><%= @user.access_token_expires_at&.to_s(:long) || "—" %></td>
+      </tr>
+      <tr>
+        <th scope="row">Created</th>
+        <td><%= l @user.created_at, format: :long %></td>
+      </tr>
+      <tr>
+        <th scope="row">Updated</th>
+        <td><%= l @user.updated_at, format: :long %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-actions">
+    <%= link_to "Edit", edit_user_path(@user), class: "btn" %>
+    <%= link_to "Back", users_path, class: "btn" %>
+  </div>
+</div>

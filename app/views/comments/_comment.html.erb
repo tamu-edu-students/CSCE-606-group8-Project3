@@ -1,0 +1,10 @@
+<article class="comment">
+  <header class="comment-meta">
+    <strong class="comment-author"><%= comment.author.display_name %></strong>
+    <span class="comment-visibility">
+      (<%= comment.visibility_internal? ? "Internal" : "Public" %>)
+    </span>
+    <time class="comment-time"><%= l(comment.created_at, format: :long) %></time>
+  </header>
+  <div class="comment-body"><%= simple_format(comment.body) %></div>
+</article>

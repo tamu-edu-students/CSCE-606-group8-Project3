@@ -1,0 +1,39 @@
+US-001 – 3 pts – As a requester, I can submit a “General Request” ticket with title, description, and attachments so that I can ask for help.
+
+US-002 – 2 pts – As a system, I record ticket status history (state changes, actor, timestamp, comment) so that users and auditors can see what happened.
+
+US-003 – 8 pts – As an admin, I can define workflow states and transitions so that tickets follow a controlled lifecycle.
+
+US-004 – 5 pts – As an admin, I can create and manage ticket types (name, description, icon/color) so that different request categories have tailored setups.
+
+US-005 – 3 pts – As a requester, I can view my submitted tickets and their statuses so that I can track progress.
+
+US-006 – 5 pts – As staff, I can see queues of tickets awaiting my approval/input so that I know what to work on next.
+
+US-007 – 5 pts – As staff, I can advance a ticket along permitted transitions so that I move work through the workflow.
+
+US-008 – 3 pts – As a user, I receive notifications when I’m assigned or mentioned so that I respond promptly.
+
+US-009 – 3 pts – As a participant, I can comment on tickets and @mention users so that collaboration happens in context.
+
+US-010 – 8 pts – As an admin, I can configure role-based access (Admin, Staff, Requester, Auditor) so that permissions are enforced.
+
+US-011 – 8 pts – As an admin, I can design ticket forms (fields, validation) so that submission captures the right data.
+
+US-012 – 8 pts – As an admin, I can configure multi-approver steps (any/all/quorum) so that governance requirements are met.
+
+US-013 – 5 pts – As a requester, I can edit allowed fields on my open tickets per state so that I can correct or add info.
+
+US-014 – 5 pts – As staff, I can request more info and return the ticket to the requester so that I can proceed with enough detail.
+
+US-015 – 3 pts – As a user, I can search and filter tickets by common fields so that I quickly find items.
+
+US-021 – 5 pts – As an admin, I can define permission schemes per ticket type so that access varies by category.
+
+US-025 – 5 pts – As a manager, I can view dashboards (volume, cycle time, SLA) so that I understand performance.
+
+US-030 – 8 pts – As an admin, I can define data retention and purge policies so that we comply with privacy requirements.
+
+US-031 – 5 pts – As an admin, I can import/export ticket types and workflows (JSON/YAML) so that I can reuse configurations.
+
+US-035 – 5 pts – As an admin, I can define SLA calendars and holidays so that timers reflect working hours.
