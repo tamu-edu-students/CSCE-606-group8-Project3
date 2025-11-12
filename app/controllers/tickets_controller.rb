@@ -9,6 +9,24 @@ class TicketsController < ApplicationController
     @tickets = @tickets.where(assignee_id: params[:assignee_id]) if params[:assignee_id].present?
   end
 
+  def mine
+    authorize Ticket, :index?
+
+    team_ids = current_user.teams.select(:id)
+
+    @tickets = policy_scope(Ticket)
+                 .where(assignee_id: current_user.id)
+                 .or(
+                   policy_scope(Ticket).where(team_id: team_ids)
+                 )
+
+    @tickets = @tickets.where(status: params[:status]) if params[:status].present?
+    @tickets = @tickets.where(category: params[:category]) if params[:category].present?
+    @tickets = @tickets.where(assignee_id: params[:assignee_id]) if params[:assignee_id].present?
+
+    render :index
+  end
+
   def show
     authorize @ticket
     @comments = @ticket.comments.includes(:author).chronological

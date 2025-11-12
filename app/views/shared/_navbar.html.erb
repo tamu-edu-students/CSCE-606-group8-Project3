@@ -3,6 +3,11 @@
     <%= link_to "MyApp", root_path, class: "brand" %>
     <%= link_to "Tickets", tickets_path, class: "nav-link" %>
 
+    <%# Show "My Tickets" only for staff users %>
+    <% if current_user&.agent? %>
+      <%= link_to "My Tickets", mine_tickets_path, class: "nav-link" %>
+    <% end %>
+
     <% if current_user&.sysadmin? %>
       <%= link_to "Teams", teams_path, class: "nav-link" %>
     <% elsif current_user&.agent? %>
