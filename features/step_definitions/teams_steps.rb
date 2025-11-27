@@ -63,7 +63,7 @@ When('I login as {string}') do |email|
   user = User.find_by!(email: email)
   ensure_omniauth_mock_for(user)
   visit "/auth/google_oauth2/callback"
-  expect(page).to have_current_path(dashboard_path)
+  expect(page).to have_current_path(personal_dashboard_path)
 end
 
 
@@ -89,9 +89,24 @@ end
 # ---------- Ticket assignment UI interactions ----------
 
 When('I select {string} from the team dropdown') do |team_name|
-  within(".assign-section") do
-    # Label in your view: "Assign to team:"
-    select team_name, from: "Assign to team:"
+  if page.has_css?('.assign-section')
+    within('.assign-section') do
+      begin
+        select team_name, from: 'Assign to team:'
+      rescue Capybara::ElementNotFound
+        if page.has_select?('ticket[team_id]')
+          select team_name, from: 'ticket[team_id]'
+        else
+          raise
+        end
+      end
+    end
+  else
+    if page.has_select?('ticket[team_id]')
+      select team_name, from: 'ticket[team_id]'
+    else
+      select team_name, from: 'Assign to team:'
+    end
   end
 end
 
@@ -162,7 +177,6 @@ When('I leave the agent dropdown unassigned') do
       if page.has_select?('Assign to agent:', with_options: [ 'Unassigned' ])
         select 'Unassigned', from: 'Assign to agent:'
       else
-        # Fallback: clear the select via setting empty value (RackTest)
         find('#ticket_assignee_id', visible: :all).set('')
       end
     end

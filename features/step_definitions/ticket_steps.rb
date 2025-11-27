@@ -27,7 +27,7 @@ Given("I go to the tickets board page") do
 end
 
 Given("I go to the dashboard page") do
-  visit dashboard_path
+  visit personal_dashboard_path
 end
 
 Given("I am on the edit page for {string}") do |subject|
@@ -154,8 +154,14 @@ end
 # Assignment-specific steps
 Given("there is an agent named {string}") do |name|
   # Create an agent with a deterministic email based on the name
-  email = "#{name.downcase.tr(' ', '_')}@example.com"
-  FactoryBot.create(:user, :agent, name: name, email: email)
+  # Reuse the team helper to ensure consistent user creation across step files
+  # (find_or_create_agent! is defined in teams_steps.rb)
+  begin
+    find_or_create_agent!(name)
+  rescue NameError
+    email = "#{name.downcase.tr(' ', '_')}@example.com"
+    FactoryBot.create(:user, :agent, name: name, email: email)
+  end
 end
 
 Given("there is a requester named {string}") do |name|
@@ -172,16 +178,22 @@ Given("the assignment strategy is set to {string}") do |strategy|
 end
 
 Given("I am logged in as agent {string}") do |name|
+  # Ensure the user exists
   user = User.find_by(name: name)
-  if user
-    OmniAuth.config.test_mode = true
-    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
-      provider: "google_oauth2",
-      uid: user.uid,
-      info: { email: user.email, name: user.name }
-    )
-    visit "/auth/google_oauth2"
+  unless user
+    # If not found
+    begin
+      user = find_or_create_agent!(name)
+    rescue NameError
+      email = "#{name.downcase.tr(' ', '_')}@example.com"
+      user = FactoryBot.create(:user, :agent, name: name, email: email)
+    end
   end
+
+  # the OmniAuth login flow
+  ensure_omniauth_mock_for(user) if defined?(ensure_omniauth_mock_for)
+  visit "/auth/google_oauth2/callback"
+  @current_user = user
 end
 
 When("I visit the ticket page") do
@@ -212,7 +224,6 @@ When("{string} creates a new ticket") do |name|
   requester = User.find_by(name: name)
   if requester
     # Simulate the user being logged in by setting current_user context
-    # Since we're using OmniAuth, we need to create the ticket directly
     ticket = Ticket.new(
       subject: 'New Ticket',
       description: 'Ticket description',
@@ -255,15 +266,12 @@ When("I select {string} from {string}") do |option, field_label|
   begin
     select option, from: field_label
   rescue Capybara::ElementNotFound
-    # Fallback: try titleized version for enum dropdowns (e.g., "open" → "Open")
     begin
       select option.titleize, from: field_label
     rescue Capybara::ElementNotFound => e
-      # For status, try capitalized (e.g., "closed" → "Closed")
       begin
         select option.capitalize, from: field_label
       rescue Capybara::ElementNotFound
-        # Helpful debug output when all attempts fail
         raise Capybara::ElementNotFound, "Unable to find option '#{option}' (or '#{option.titleize}' or '#{option.capitalize}') for field '#{field_label}'. Original error: #{e.message}"
       end
     end

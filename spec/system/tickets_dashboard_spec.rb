@@ -12,8 +12,8 @@ RSpec.describe "Tickets dashboard", type: :system do
     sign_in(agent)
     visit root_path
 
-    expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_content("My Tickets Dashboard")
+  expect(page).to have_current_path(personal_dashboard_path)
+  expect(page).to have_content("My Tickets Dashboard")
   end
 
   it "shows counts and lists of tickets assigned to the current user" do
@@ -22,10 +22,10 @@ RSpec.describe "Tickets dashboard", type: :system do
     create(:ticket, subject: "My Open Task", status: :open, assignee: agent, requester: requester)
     create(:ticket, subject: "My In Progress Task", status: :in_progress, assignee: agent, requester: requester)
     create(:ticket, subject: "My Resolved Task", status: :resolved, assignee: agent, requester: requester)
-    # Create an unassigned ticket (should not appear)
+    # Create an unassigned ticket
     create(:ticket, subject: "Someone Else Task", status: :open, requester: requester)
 
-    visit dashboard_path
+  visit personal_dashboard_path
 
     expect(page).to have_content("Open (1)")
     expect(page).to have_content("In Progress (1)")
@@ -44,7 +44,7 @@ RSpec.describe "Tickets dashboard", type: :system do
     create(:ticket, subject: "Task B", status: :open, priority: :low, assignee: agent, requester: requester)
     create(:ticket, subject: "Task C", status: :in_progress, priority: :medium, assignee: agent, requester: requester)
 
-    visit dashboard_path
+  visit personal_dashboard_path
 
     # Find the Open section
     expect(page).to have_content("Open (2)")
@@ -68,7 +68,7 @@ RSpec.describe "Tickets dashboard", type: :system do
     create(:ticket, subject: "High Priority", status: :open, priority: :high, assignee: agent, requester: requester)
     create(:ticket, subject: "Low Priority", status: :open, priority: :low, assignee: agent, requester: requester)
 
-    visit dashboard_path
+  visit personal_dashboard_path
 
     within(".dashboard-status", text: "Open") do
       expect(page).to have_content("High Priority")
@@ -83,18 +83,18 @@ RSpec.describe "Tickets dashboard", type: :system do
 
     ticket = create(:ticket, subject: "Clickable Ticket", status: :open, assignee: agent, requester: requester)
 
-    visit dashboard_path
+  visit personal_dashboard_path
 
-    click_link("Clickable Ticket")
+  find_link("Clickable Ticket", match: :first).click
 
-    expect(page).to have_current_path(ticket_path(ticket))
+  expect(page).to have_current_path(ticket_path(ticket))
     expect(page).to have_content("Clickable Ticket")
   end
 
   it "redirects to dashboard after sign-in" do
     sign_in(agent)
 
-    expect(page).to have_current_path(dashboard_path)
+  expect(page).to have_current_path(personal_dashboard_path)
   end
 
   it "shows accurate counts even when tickets exist for other users" do
@@ -109,7 +109,7 @@ RSpec.describe "Tickets dashboard", type: :system do
     # Create tickets assigned to another user
     create(:ticket, subject: "Charlie Task 1", status: :open, assignee: other_agent, requester: requester)
 
-    visit dashboard_path
+  visit personal_dashboard_path
 
     # Current user should see only their own tickets
     expect(page).to have_content("Open (2)")

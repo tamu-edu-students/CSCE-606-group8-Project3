@@ -16,8 +16,19 @@ Rails.application.routes.draw do
     end
     resources :comments, only: :create
   end
-  # dashboard summarizing tickets assigned to the current user
-  get "/dashboard", to: "tickets#dashboard", as: :dashboard
+  # Dashboard routes
+  # /dashboard as the Kanban-style board (tickets#board)
+  get "/dashboard", to: "tickets#board", as: :dashboard
+
+  # Summary (metrics) route for personal metrics
+  get "/summary", to: "metrics#user_metrics", as: :summary
+
+  # Admin metrics dashboard
+  get "/metrics/admin", to: "metrics#admin_dashboard", as: :admin_dashboard
+
+  # Personal dashboard route
+  get "/personal_dashboard", to: "tickets#dashboard", as: :personal_dashboard
+
   resources :teams do
     resources :team_memberships, only: [ :create, :destroy ]
   end

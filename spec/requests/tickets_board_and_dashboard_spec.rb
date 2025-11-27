@@ -28,7 +28,7 @@ RSpec.describe "Tickets board and dashboard", type: :request do
     end
 
     it "shows counts and lists tickets assigned to current user grouped by status" do
-      get dashboard_path
+      get personal_dashboard_path
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("My Tickets Dashboard")
       expect(response.body).to include("Open")

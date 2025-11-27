@@ -37,8 +37,8 @@ RSpec.configure do |config|
     def sign_in(user)
       mock_google_auth(uid: user.uid, email: user.email, name: user.name || "Tester")
       visit "/auth/google_oauth2/callback"
-      # After sign-in, the dashboard is the landing page for authenticated users
-      expect(page).to have_current_path(dashboard_path)
+  # After sign-in, the personal dashboard is the landing page for authenticated users
+  expect(page).to have_current_path(personal_dashboard_path)
     end
   end
 
