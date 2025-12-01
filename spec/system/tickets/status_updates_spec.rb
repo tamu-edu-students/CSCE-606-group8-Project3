@@ -14,15 +14,13 @@ RSpec.describe "Ticket status and comments", type: :system do
     sign_in(staff)
     visit ticket_path(ticket)
 
-    select "On Hold", from: "ticket[status]"
-    click_button "Go"
+  select "On Hold", from: "ticket[status]"
+  click_button "Update Status"
 
     expect(page).to have_css(".status-badge", text: "On Hold")
 
-    # CHANGED: match label text in the view
     fill_in "Leave a comment", with: "Internal triage note"
     select "Internal", from: "comment_visibility"
-    # CHANGED: match submit text in the view
     click_button "Comment"
 
     expect(page).to have_content("Comment added successfully.")
@@ -40,17 +38,15 @@ RSpec.describe "Ticket status and comments", type: :system do
     sign_in(requester)
     visit ticket_path(ticket)
 
-    expect(page).not_to have_button("Go")
+  expect(page).not_to have_button("Update Status")
     expect(page).to have_css(".status-badge", text: "In Progress")
     within(".comments-list") do
       expect(page).to have_content("Any update?")
       expect(page).not_to have_content("Internal diagnosis")
     end
 
-    # CHANGED: same label as above
     fill_in "Leave a comment", with: "Thanks for the update"
     # Requesters don’t see visibility select, so just submit
-    # CHANGED: button text
     click_button "Comment"
 
     expect(page).to have_content("Comment added successfully.")
