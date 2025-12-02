@@ -21,9 +21,9 @@ Feature: View ticket details
     And I should see "Technical Issue"
     And I should see "Submitter"
     And I should see "Viewer Name"
-    And I should see "Agent"
-    And I should see "Unassigned"
-    And I should see "Discussion"
+    And I should see "Assignment"
+    And I should see "None"
+    And I should see "No comments"
     And I should see "No comments yet."
 
   Scenario: View a resolved ticket shows resolved timestamp (history)
