@@ -6,6 +6,7 @@
     </div>
     <div class="headline-right">
       <%= link_to "Back", tickets_path, class: "btn btn-secondary" %>
+      
       <% if policy(@ticket).update? %>
         <%= link_to "Edit", edit_ticket_path(@ticket), class: "btn btn-secondary" %>
       <% end %>
@@ -28,21 +29,26 @@
       </div>
 
       <% if @ticket.attachments.attached? %>
-        <section class="ticket-attachments">
-          <h2>Attachments</h2>
-          <ul class="attachment-list">
+        <section class="ticket-attachments" style="margin-top: 1.5rem; padding: 1rem; border: 1px solid #e1e4e8; border-radius: 6px; background-color: #fff;">
+          <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 0.5rem;">Attachments</h2>
+          <ul class="attachment-list" style="list-style: none; padding: 0; margin: 0;">
             <% @ticket.attachments.each do |att| %>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                <%= link_to att.filename.to_s, url_for(att), target: "_blank", rel: "noopener", style: "text-decoration:none; color:#0366d6;" %>
-                <span style="color:#6a737d; font-size:0.85em;">(<%= number_to_human_size(att.byte_size) %>)</span>
+              <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #6a737d;">
+                  <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                  <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                
+                <%= link_to att.filename.to_s, url_for(att), target: "_blank", rel: "noopener", style: "text-decoration: none; color: #0366d6; font-weight: 500;" %>
+                
+                <span style="color: #6a737d; font-size: 0.85em;">(<%= number_to_human_size(att.byte_size) %>)</span>
               </li>
             <% end %>
           </ul>
         </section>
       <% end %>
 
-      <section class="ticket-comments">
+      <section class="ticket-comments" style="margin-top: 2rem;">
         <h2>Discussion (<%= @comments.size %>)</h2>
         <% if @comments.any? %>
           <div class="comments-list">
@@ -62,7 +68,7 @@
                 <%= form.text_area :body, rows: 4, class: "form-control", style: "width:100%; box-sizing:border-box;" %>
               </div>
 
-              <div class="actions-bar" style="justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+              <div class="actions-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
                 <div class="actions-left">
                   <% if current_user.agent? || current_user.admin? %>
                     <%= form.select :visibility, Comment.visibilities.keys.map { |v| [v.titleize, v] }, {}, { style: "padding: 0.3rem;" } %>
@@ -100,7 +106,7 @@
                <label class="sidebar-label" style="display:block; margin-bottom:0.25rem;">Update Status</label>
                <div style="display:flex; gap:0.5rem;">
                  <%= form.select :status, Ticket.statuses.keys.map { |key| [key.titleize, key] }, {}, { style: "flex-grow:1; width:100%;" } %>
-                 <%= form.submit "Update Status", class: "btn btn-sm" %>
+                 <%= form.submit "Update", class: "btn btn-sm" %>
                </div>
              <% end %>
           </div>
