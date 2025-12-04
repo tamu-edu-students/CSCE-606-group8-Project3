@@ -368,6 +368,7 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
+    redcarpet (3.6.1)
     regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
@@ -548,6 +549,7 @@ DEPENDENCIES
   rack_session_access
   rails (~> 8.0.3)
   rails-controller-testing
+  redcarpet (~> 3.6)
   rspec-rails
   rubocop-rails-omakase
   selenium-webdriver (>= 4.6)
