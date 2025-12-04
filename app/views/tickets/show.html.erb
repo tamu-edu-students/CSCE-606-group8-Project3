@@ -24,7 +24,7 @@
       <div class="description-card">
         <h3 style="margin-top: 0; font-size: 1rem; color: #555; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1rem;">Description</h3>
         <div class="prose">
-          <%= simple_format(@ticket.description) %>
+          <%= render_markdown(@ticket.description) %>
         </div>
       </div>
 

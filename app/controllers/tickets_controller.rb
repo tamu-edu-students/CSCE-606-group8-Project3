@@ -79,6 +79,8 @@ class TicketsController < ApplicationController
       end
     end
 
+    @ticket.assign_attributes(ticket_params)
+    
     if (current_user&.agent? || current_user&.admin?) && params.dig(:ticket, :approval_status).present?
       approval_param = params.dig(:ticket, :approval_status).to_s
       case approval_param

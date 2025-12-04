@@ -86,3 +86,5 @@ gem "pundit", "~> 2.5"
 
 # Charting library for dashboards (via CDN in views)
 # using Chart.js from CDN, no gem needed
+
+gem "redcarpet", "~> 3.6"

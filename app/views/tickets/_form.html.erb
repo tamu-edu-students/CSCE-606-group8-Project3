@@ -31,8 +31,8 @@
     </div>
 
     <div class="form-field form-field--wide">
-      <%= form.label :description %>
-      <%= form.text_area :description, rows: 8 %>
+      <%= form.label :description, "Description (Supports Markdown: **bold**, *italics*, - lists)" %>
+      <%= form.text_area :description, rows: 8, placeholder: "Describe the issue... Use **text** for bold, - for lists." %>
     </div>
 
     <div class="form-field form-field--wide">
